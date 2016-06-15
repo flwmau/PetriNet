@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html ng-app="petriApplication">
+<head>
+    <meta charset="UTF-8">
+    <script type="text/javascript" src="http://jointjs.com/js/vendor/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="http://jointjs.com/js/vendor/lodash/lodash.min.js"></script>
+    <script type="text/javascript" src="http://jointjs.com/js/vendor/backbone/backbone-min.js"></script>
+    <script type="text/javascript" src="http://jointjs.com/cms/downloads/joint.js"></script>
+    <link rel="stylesheet" type="text/css" href="http://jointjs.com/cms/downloads/joint.css" />
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+    <script type="text/javascript" src="joint.ui.selectionView.js"></script>
+    <link rel="stylesheet" type="text/css" href="joint.ui.selectionView.css"/>
+    <script type="text/javascript" src="app.js"></script>
+</head>
+<body ng-controller="graphPetri">
+<div id="myholder"></div>
+<div id="tools">
+    <form id="toolsForm">
+        Ворота <input type="radio" id="gate" name="tool" checked value="gate"><br>
+        Позиции <input type="radio" id="position" name="tool" value="position"><br>
+        Линии <input type="radio" id="line" name="tool" value="line"><br>
+        Поинты <input type="radio" id="point" name="tool" value="point"><br>
+    </form>
+</div>
+<div id="preview"></div>
+</body>
+</html>
