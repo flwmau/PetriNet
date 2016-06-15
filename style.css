@@ -10,6 +10,14 @@
 #tools {
     border: 1px solid cornflowerblue;
     float:left;
-    width: 300px;
-    height: 200px;
+    width: 290px;
+    height: 288px;
+    padding-left: 10px;
+    padding-top: 10px;
+}
+#menu-item{
+    border: 1px solid cornflowerblue;
+    float:left;
+    width:198px;
+    height: 298px;
 }

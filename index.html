@@ -15,6 +15,7 @@
 </head>
 <body ng-controller="graphPetri">
 <div id="myholder"></div>
+<div id="preview"></div>
 <div id="tools">
     <form id="toolsForm">
         Ворота <input type="radio" id="gate" name="tool" checked value="gate"><br>
@@ -25,6 +26,9 @@
         Удалить <input type="radio" id="delete" name="tool" value="delete">
     </form>
 </div>
-<div id="preview"></div>
+<div id="menu-item">
+    <label>Название элемента:</label>
+    <input ng-change="changeHandler()" type="text" ng-model="currentItem" placeholder="Вставьте имя">
+</div>
 </body>
 </html>
