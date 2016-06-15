@@ -27,11 +27,17 @@ var application = angular.module("petriApplication", []).controller("graphPetri"
         width: 700,
         height: 500,
         model: graph,
-        gridSize: 10
+        gridSize: 10,
+        perpendicularLinks: true,
+        embeddingMode: true,
+        markAvailable: true,
+        linkPinning: false,
+        snapLinks: true
     });
     var pn = joint.shapes.pn;
     var pCircle = new pn.Place({
         position: {x: 100, y:100},
+        size: {width: 50, height: 50},
         attrs: {
             '.label': {text: 'p', fill: '#7c68fc'},
             '.root': { stroke: '#afafaf', 'stroke-width': 1},
@@ -41,6 +47,7 @@ var application = angular.module("petriApplication", []).controller("graphPetri"
     });
     var pTransition = new pn.Transition({
         position: {x:50, y:100},
+        size: {width:15, height:50},
         attrs:{
             '.label': {text: 'protoGate', fill: '#fe854f'},
             '.root': {fill: '#9586fd', stoke: '#9586fd'}
@@ -72,15 +79,42 @@ var application = angular.module("petriApplication", []).controller("graphPetri"
 
     //нажатие на элемент
     paper.on('cell:pointerclick', function(cellView, evt, x, y){
-        //testDraw();
-        console.log(cellView.model);
-        console.log();
+
+        if($scope.currentTool == "point") {
+            if (cellView.model instanceof joint.shapes.pn.Place) {
+                cellView.model.set('tokens', cellView.model.get('tokens') + 1);
+            }
+        }
+        if($scope.currentTool == "delete"){
+            cellView.model.remove();
+            return;
+        }
+        if($scope.firstItem !=null) {
+            //не трогать линии
+            if (cellView.model instanceof joint.shapes.pn.Link) {
+                return;
+            }
+            //не соединять одинаковые элементы
+            if (cellView.model.id === $scope.firstItem.id) {
+                return;
+            }
+            //не соединять позиции
+            if (cellView.model instanceof joint.shapes.pn.Place && $scope.firstItem instanceof joint.shapes.pn.Place) {
+                return;
+            }
+            //не соединять переходики
+            if (cellView.model instanceof joint.shapes.pn.Transition && $scope.firstItem instanceof joint.shapes.pn.Transition) {
+                return;
+            }
+
+        }
         if($scope.flag == true && $scope.currentTool == "line"){
+            console.log("create link");
             graph.addCell(link($scope.firstItem, cellView.model));
             $scope.flag = false;
         }
         else{
-
+            console.log("set first item");
             $scope.firstItem = cellView.model;
             $scope.flag = true;
         }
@@ -90,6 +124,7 @@ var application = angular.module("petriApplication", []).controller("graphPetri"
     $('#toolsForm input').on('change', function(){
         if($scope.flag == true){
             $scope.flag = false;
+            $scope.firstItem = null;
         }
         $scope.currentTool = $('input[name=tool]:checked', '#toolsForm').val()
     });
@@ -125,30 +160,19 @@ var application = angular.module("petriApplication", []).controller("graphPetri"
         });
     }
 
-
     function getToolFromName(toolName, x, y){
         switch(toolName) {
             case "gate":
-                var item = createTransition(pTransition, x, y);
+                var item = createTransition(pTransition, x-7.5, y-25);
                 return item;
             case "position":
-                var item = createPosition(pCircle,x, y);
+                var item = createPosition(pCircle,x-25, y-25);
                 return item;
+            case "point":
             default:
                 return "";
         }
     }
-
-    function testDraw(){
-        console.log("testdraw");
-        var t = pTransition.clone().position(100,100);
-        var p = pCircle.clone().position(200,100);
-        graph.addCells([t, p,   link(t, p)]);
-    }
-
-
-
-
 });
 
 
