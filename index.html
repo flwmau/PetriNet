@@ -14,6 +14,9 @@
     <script type="text/javascript" src="app.js"></script>
 </head>
 <body ng-controller="graphPetri">
+<form ng-submit="sendJson()" method="POST">
+    <input style="height:22px; width:105px" class="btn-primary" type="submit" value="Отправить">
+</form>
 <div id="myholder"></div>
 <div id="preview"></div>
 <div id="tools">
@@ -26,9 +29,10 @@
         Удалить <input type="radio" id="delete" name="tool" value="delete">
     </form>
 </div>
-<div id="menu-item">
+<!--<div id="menu-item">
     <label>Название элемента:</label>
     <input ng-change="changeHandler()" type="text" ng-model="currentItem" placeholder="Вставьте имя">
 </div>
+-->
 </body>
 </html>

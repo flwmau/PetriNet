@@ -8,7 +8,7 @@ var application = angular.module("petriApplication", []).controller("graphPetri"
     $scope.positionTransitionArray = []; // {x: 10, y: 10, element: element};
     $scope.firstItem = "";
     $scope.secondItem = "";
-
+    $scope.response = "";
 
     function log(){
         console.log("$scope.positionCount" + $scope.positionCount);
@@ -73,8 +73,6 @@ var application = angular.module("petriApplication", []).controller("graphPetri"
     paperSmall.scale(.5);
     paperSmall.$el.css('pointer-events', 'none');
 
-
-
     //рисование картинок
     paper.on('blank:pointerdown', function(evt, x, y){
         //var parentOffset = $(this).parent().offset();
@@ -86,7 +84,26 @@ var application = angular.module("petriApplication", []).controller("graphPetri"
         graph.addCell(getToolFromName($scope.currentTool, x, y));
         log();
     });
+    $scope.sendJson = function(){
+        
 
+
+        var xhr = new XMLHttpRequest();
+        var body = JSON.stringify(graph);
+        xhr.open("POST", "localhost", true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onreadystatechange = function() {
+            if (this.readyState != 4) return;
+            $scope.response = this.responseText;
+        }
+        xhr.send(JSON.stringify(body));
+
+
+
+
+
+
+    }
 
     $scope.$watch('currentItem', function(newVal, oldVal){
         console.log($scope.firstItem);
@@ -288,12 +305,9 @@ var application = angular.module("petriApplication", []).controller("graphPetri"
                 });
         }
     };
-
     function angularApply($scope) {
             $scope.$apply();
     }
-
-
 });
 
 
