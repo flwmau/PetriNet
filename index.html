@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html ng-app="petriApplication">
+
 <head>
     <meta charset="UTF-8">
     <script type="text/javascript" src="lib/jquery.min.js"></script>
@@ -15,22 +16,52 @@
 
     <script type="text/javascript" src="app.js"></script>
 </head>
+
 <body ng-controller="graphPetri">
-<div id="myholder"></div>
-<div id="preview"></div>
-<div id="tools">
-    <form id="toolsForm">
-        Ворота <input type="radio" id="gate" name="tool" checked value="gate"><br>
-        Позиции <input type="radio" id="position" name="tool" value="position"><br>
-        Линии <input type="radio" id="line" name="tool" value="line"><br>
-        Поинты <input type="radio" id="point" name="tool" value="point"><br>
-        Удалить поинты <input type="radio" id="deletepoint" name="tool" value="deletepoint"><br>
-        Удалить <input type="radio" id="delete" name="tool" value="delete">
-    </form>
-</div>
-<div id="menu-item">
-    <label>Название элемента:</label>
-    <input ng-change="changeHandler()" type="text" ng-model="currentItem" placeholder="Вставьте имя">
-</div>
+    <div class="ui inverted menu">
+        <div class="ui container">
+            <a href="#" class="header item">PetriNet</a>
+        </div>
+    </div>
+    <div class="ui two column stackable grid container">
+        <div id="myholder" class="ui piled segment scretched column"></div>
+        <div class="column">
+            <div id="tools">
+                <form class="ui raised segments form" id="toolsForm">
+                    <div class="ui segment">
+                        Ворота
+                        <input type="radio" class="ui segment" id="gate" name="tool" checked value="gate">
+                    </div>
+                    <div class="ui segment">
+                        Позиции
+                        <input type="radio" class="ui segment" id="position" name="tool" value="position">
+                    </div>
+                    <div class="ui segment">
+                        Линии
+                        <input type="radio" class="ui segment" id="line" name="tool" value="line">
+                    </div>
+                    <div class="ui segment">
+                        Поинты
+                        <input type="radio" class="ui segment" id="point" name="tool" value="point">
+                    </div>
+                    <div class="ui segment">
+                        Удалить поинты
+                        <input type="radio" class="ui segment" id="deletepoint" name="tool" value="deletepoint">
+                    </div>
+                    <div class="ui segment">
+                        Удалить
+                        <input type="radio" class="ui segment" id="delete" name="tool" value="delete">
+                    </div>
+                </form>
+            </div>
+            <div class="ui raised segment container">
+                <label class="ui basic label">Название элемента:</label>
+                <div class="ui input">
+                    <input ng-change="changeHandler()" type="text" ng-model="currentItem" placeholder="Вставьте имя">
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
+
 </html>
