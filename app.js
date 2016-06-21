@@ -10,6 +10,7 @@ var application = angular.module("petriApplication", []).controller("graphPetri"
     $scope.secondItem = "";
     $scope.response = "";
 
+
     function log(){
         console.log("$scope.positionCount" + $scope.positionCount);
         console.log("$scope.transitionCount" + $scope.transitionCount);
@@ -85,19 +86,23 @@ var application = angular.module("petriApplication", []).controller("graphPetri"
         log();
     });
     $scope.sendJson = function(){
-        
-
-
-        var xhr = new XMLHttpRequest();
         var body = JSON.stringify(graph);
-        xhr.open("POST", "localhost", true);
+        console.log(body);
+
+
+        /*var xhr = new XMLHttpRequest();
+
+        var body = JSON.stringify(graph);
+        console.log(body);
+        xhr.open("POST", "http://192.168.0.223:4567", true);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         xhr.onreadystatechange = function() {
             if (this.readyState != 4) return;
+            console.log("REQUEST SENDED");
             $scope.response = this.responseText;
         }
         xhr.send(JSON.stringify(body));
-
+        */
 
 
 
