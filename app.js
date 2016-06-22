@@ -126,7 +126,14 @@ var application = angular.module("petriApplication", []).controller("graphPetri"
 
     function process_output(json_string){
       json = JSON.parse(json_string)
-      console.log(json);
+      document.getElementById("limited").innerHTML=json.limited
+      document.getElementById("safe").innerHTML=json.safe
+      document.getElementById("save").innerHTML=json.save
+      document.getElementById("transfers_potential_aliveness").innerHTML=json.transfers_potential_aliveness
+      document.getElementById("transfers_aliveness").innerHTML=json.transfers_aliveness
+      document.getElementById("net_aliveness").innerHTML=json.net_aliveness
+      document.getElementById("transfers_stability").innerHTML=json.transfers_stability
+      document.getElementById("net_stability").innerHTML=json.net_stability
     }
 
     $scope.$watch('currentItem', function(newVal, oldVal){
