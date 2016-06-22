@@ -74,47 +74,62 @@ var application = angular.module("petriApplication", []).controller("graphPetri"
     paperSmall.scale(.5);
     paperSmall.$el.css('pointer-events', 'none');
 
-    //рисование картинок
     paper.on('blank:pointerdown', function(evt, x, y){
         //var parentOffset = $(this).parent().offset();
         //or $(this).offset(); if you really just want the current element's offset
         //var relX = evt.pageX - parentOffset.left;
         //var relY = evt.pageY - parentOffset.top;
         console.log(x + " " + y);
-        //координаты знаю
         graph.addCell(getToolFromName($scope.currentTool, x, y));
         log();
     });
     $scope.sendJson = function(){
         var body = JSON.stringify(graph);
-        console.log(body);
+        body = JSON.parse(body) //???
 
+        var req = {"mark":[],"transfers":[]}
+        var tr_count = body.cells.filter(function (el,ind,arr) {return el.type == "pn.Transition"}).length
+        for (var i = 0; i < tr_count; i++) req.transfers.push([[],[]])
 
-        /*var xhr = new XMLHttpRequest();
+        var positions = body.cells.filter(function(el, ind, arr) {
+          return el.type == "pn.Place"
+        }).sort(function(a, b) { if (a.attrs[".label"].text > b.attrs[".label"].text) {return 1} else {return -1}})
 
-        var body = JSON.stringify(graph);
-        console.log(body);
-        xhr.open("POST", "http://192.168.0.223:4567", true);
+        positions.forEach(function (x){
+          req.mark.push(x.tokens)
+        })
+
+        body.cells.forEach(function(x) {
+          if (x.type == "pn.Link") {
+            body.cells.forEach(function(y) {
+              if ((x.target.id == y.id) & (y.type == "pn.Place")) out_place = parseInt(y.attrs[".label"].text.slice(1))
+              if ((x.source.id == y.id) & (y.type == "pn.Transition")) out_trans = parseInt(y.attrs[".label"].text.slice(1))
+              if ((x.source.id == y.id) & (y.type == "pn.Place")) in_place = parseInt(y.attrs[".label"].text.slice(1))
+              if ((x.target.id == y.id) & (y.type == "pn.Transition")) in_trans = parseInt(y.attrs[".label"].text.slice(1))
+            })
+            if ((typeof out_place !== 'undefined')) { req.transfers[out_trans][1].push(out_place)}
+            if ((typeof in_place !== 'undefined')) { req.transfers[in_trans][0].push(in_place)}
+            in_place = undefined
+            out_place = undefined
+          }
+        })
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "http://localhost:4567", true);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         xhr.onreadystatechange = function() {
             if (this.readyState != 4) return;
             console.log("REQUEST SENDED");
             $scope.response = this.responseText;
         }
-        xhr.send(JSON.stringify(body));
-        */
-
-
-
-
-
+        xhr.send(JSON.stringify(req));
+        console.log($scope.response);
     }
 
     $scope.$watch('currentItem', function(newVal, oldVal){
         console.log($scope.firstItem);
     });
 
-    //нажатие на элемент
     paper.on('cell:pointerclick', function(cellView, evt, x, y){
         $scope.currentItem = cellView.model.attr('.label').text;
         $scope.$apply();
@@ -139,19 +154,15 @@ var application = angular.module("petriApplication", []).controller("graphPetri"
             return;
         }
         if($scope.firstItem !=null) {
-            //не трогать линии
             if (cellView.model instanceof joint.shapes.pn.Link) {
                 return;
             }
-            //не соединять одинаковые элементы
             if (cellView.model.id === $scope.firstItem.id) {
                 return;
             }
-            //не соединять позиции
             if (cellView.model instanceof joint.shapes.pn.Place && $scope.firstItem instanceof joint.shapes.pn.Place) {
                 return;
             }
-            //не соединять переходики
             if (cellView.model instanceof joint.shapes.pn.Transition && $scope.firstItem instanceof joint.shapes.pn.Transition) {
                 return;
             }
@@ -171,7 +182,6 @@ var application = angular.module("petriApplication", []).controller("graphPetri"
         }
     });
 
-    //изменение инструмента
     $('#toolsForm input').on('change', function(){
         if($scope.flag == true){
             $scope.flag = false;
@@ -182,7 +192,6 @@ var application = angular.module("petriApplication", []).controller("graphPetri"
         $scope.currentTool = $('input[name=tool]:checked', '#toolsForm').val()
     });
 
-    //Создание перехода
     function createTransition(prototype, x, y){
         var text = "t" + $scope.transitionCount++;
         $scope.inputFunction[text] = [0];
@@ -191,13 +200,11 @@ var application = angular.module("petriApplication", []).controller("graphPetri"
             '.label': {text: text}
         }).position(x,y);
     }
-    //Создание позиции
     function createPosition(prototype, x, y){
         return prototype.clone().attr({
             '.label': {text: "p"+$scope.positionCount++}
         }).position(x, y);
     }
-    //Связывание двух элементов вместе
     function link(a, b) {
         return new pn.Link({
             source: { id: a.id, selector: '.root' },
@@ -314,10 +321,3 @@ var application = angular.module("petriApplication", []).controller("graphPetri"
             $scope.$apply();
     }
 });
-
-
-
-
-
-
-

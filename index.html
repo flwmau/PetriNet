@@ -54,12 +54,9 @@
                     </div>
                 </form>
             </div>
-            <div class="ui raised segment container">
-                <label class="ui basic label">Название элемента:</label>
-                <div class="ui input">
-                    <input ng-change="changeHandler()" type="text" ng-model="currentItem" placeholder="Вставьте имя">
-                </div>
-            </div>
+            <form class="ui container" ng-submit="sendJson()" method="POST">
+                <button class="ui primary button" type="submit">Отправить</button>
+            </form>
         </div>
     </div>
 </body>
