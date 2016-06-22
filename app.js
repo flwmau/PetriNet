@@ -119,11 +119,14 @@ var application = angular.module("petriApplication", []).controller("graphPetri"
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         xhr.onreadystatechange = function() {
             if (this.readyState != 4) return;
-            console.log("REQUEST SENDED");
-            $scope.response = this.responseText;
+            process_output(this.responseText);
         }
         xhr.send(JSON.stringify(req));
-        console.log($scope.response);
+    }
+
+    function process_output(json_string){
+      json = JSON.parse(json_string)
+      console.log(json);
     }
 
     $scope.$watch('currentItem', function(newVal, oldVal){
